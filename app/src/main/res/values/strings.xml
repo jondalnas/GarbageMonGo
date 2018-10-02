@@ -1,0 +1,6 @@
+<resources>
+    <string name="app_name">Garbagemon Go</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="google_maps_key">AIzaSyDh38_m2_w5okPmPgf59_MxeRtUVbivIoM</string>
+</resources>
