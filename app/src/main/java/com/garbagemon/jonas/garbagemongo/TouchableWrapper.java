@@ -20,10 +20,9 @@ public class TouchableWrapper extends FrameLayout {
         super(c);
     }
 
+    Point touchPoint = new Point();
     @Override
     public boolean dispatchTouchEvent(MotionEvent eve) {
-        Point touchPoint = new Point();  //first point on screen the user's finger touches
-        final GoogleMap map;
         final int action = eve.getActionMasked();
         int pointerIndex = eve.getActionIndex();
         GestureDetector g = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener());
@@ -49,6 +48,10 @@ public class TouchableWrapper extends FrameLayout {
                         @Override
                         public void run() {
                             // move the camera (NOT animateCamera() ) to new position with "bearing" updated
+                            if ((angle+"").contains("NaN")) return;
+
+                            Log.d("Angle",angle+"");
+
                             Map.getgMap().moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(latlng).tilt(67.5f).zoom(Map.getgMap().getCameraPosition().zoom).bearing(Map.getgMap().getCameraPosition().bearing - angle).build()));
                         }
                     });
@@ -68,14 +71,16 @@ public class TouchableWrapper extends FrameLayout {
     }
 
     public float angleBetweenLines(Point center, Point endLine1, Point endLine2) {
+        if (endLine1.x == endLine2.x && endLine1.y == endLine2.y) return 0;
+
         float v0x = endLine1.x - center.x;
         float v0y = endLine1.y - center.y;
         float v1x = endLine2.x - center.x;
         float v1y = endLine2.y - center.y;
 
-        float angel = (float) Math.acos(v0x * v1x + v0y * v1y);
+        float angle = (float) Math.atan2(v1y, v1x) - (float) Math.atan2(v0y, v0x);
 
-        return (float) (angel * 180.0 / Math.PI);
+        return (float) (angle * 180.0 / Math.PI);
     }
 
     public Point getCenterOfMapAsPoint() {
