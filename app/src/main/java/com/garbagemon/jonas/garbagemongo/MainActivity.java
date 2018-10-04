@@ -36,6 +36,10 @@ public class MainActivity extends AppCompatActivity {
         map.update(GPS.location);
     }
 
+    public static void focusOn(LatLng location) {
+        map.focus(location);
+    }
+
     @Override
     protected void onResume() {
         super.onResume();

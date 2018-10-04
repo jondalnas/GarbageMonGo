@@ -31,6 +31,7 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     private static GoogleMap gMap;
     private TouchableWrapper tw;
     private Marker player;
+    private Marker focus;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -56,6 +57,10 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
             player.setPosition(location);
 
         gMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(location).tilt(67.5f).zoom(18).bearing(gMap.getCameraPosition().bearing).build()));
+    }
+
+    public void focus(LatLng location) {
+        gMap.addMarker(new MarkerOptions().position(location).title("Trash"));
     }
 
     @Override
