@@ -22,6 +22,7 @@ import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class Map extends SupportMapFragment implements OnMapReadyCallback {
@@ -29,6 +30,7 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     private View mapView;
     private static GoogleMap gMap;
     private TouchableWrapper tw;
+    private Marker player;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -43,13 +45,17 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
         gMap.getUiSettings().setScrollGesturesEnabled(false);
+    }
 
-        // Add a marker in Sydney and move the camera
-        LatLng sydney = new LatLng(-34, 151);
-        gMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
+    public void update(LatLng location) {
+        if (location == null) return;
 
-        CameraUpdate position = CameraUpdateFactory.newLatLngZoom(sydney,15);
-        gMap.animateCamera(position);
+        if (player == null)
+            player = gMap.addMarker(new MarkerOptions().position(location).title("Player"));
+        else
+            player.setPosition(location);
+
+        gMap.moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(location).tilt(67.5f).zoom(18).bearing(gMap.getCameraPosition().bearing).build()));
     }
 
     @Override

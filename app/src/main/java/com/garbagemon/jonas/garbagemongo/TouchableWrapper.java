@@ -52,7 +52,7 @@ public class TouchableWrapper extends FrameLayout {
 
                             Log.d("Angle",angle+"");
 
-                            Map.getgMap().moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(latlng).tilt(67.5f).zoom(Map.getgMap().getCameraPosition().zoom).bearing(Map.getgMap().getCameraPosition().bearing - angle).build()));
+                            Map.getgMap().moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(latlng).tilt(67.5f).zoom(18).bearing(Map.getgMap().getCameraPosition().bearing - angle).build()));
                         }
                     });
 

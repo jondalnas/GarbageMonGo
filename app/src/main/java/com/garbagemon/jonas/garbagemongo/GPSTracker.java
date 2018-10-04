@@ -21,29 +21,29 @@ import com.google.android.gms.maps.model.LatLng;
 public class GPSTracker extends Service implements LocationListener {
 
     public LatLng location;
-    private final Context mContext;
+    private final Context context;
     protected LocationManager locationManager;
     boolean isGPSEnabled = false;
     boolean canGetLocation = false;
-    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 1;
-    private static final long MIN_TIME_BW_UPDATES = 1000 * 60 * 1;
+    private static final long MIN_DISTANCE_CHANGE_FOR_UPDATES = 0;//Maybe 1
+    private static final long MIN_TIME_BW_UPDATES = 1000 * 5;
 
     public GPSTracker(Context context) {
-        this.mContext = context;
+        this.context = context;
         getLocation();
     }
 
     public LatLng getLocation() {
-        if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) mContext, Manifest.permission.ACCESS_FINE_LOCATION)) {
+        if (ContextCompat.checkSelfPermission(context, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, Manifest.permission.ACCESS_FINE_LOCATION)) {
                 return null;
             } else {
-                ActivityCompat.requestPermissions((Activity) mContext, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                ActivityCompat.requestPermissions((Activity) context, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
             }
         }
 
         try {
-            locationManager = (LocationManager) mContext.getSystemService(LOCATION_SERVICE);
+            locationManager = (LocationManager) context.getSystemService(LOCATION_SERVICE);
 
             isGPSEnabled = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
 
@@ -76,7 +76,8 @@ public class GPSTracker extends Service implements LocationListener {
 
     @Override
     public void onLocationChanged(Location location) {
-
+        this.location = new LatLng(location.getLatitude(), location.getLongitude());
+        MainActivity.updateMap();
     }
 
     @Override
