@@ -21,7 +21,6 @@ public class TouchableWrapper extends FrameLayout {
     }
 
     private Point touchPoint = new Point();
-    private long downTime;
     private static final float PRESS_THRESHOLD = 0.3f;
 
     @Override
@@ -31,15 +30,11 @@ public class TouchableWrapper extends FrameLayout {
         GestureDetector g = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener());
         g.onTouchEvent(eve);
 
-        Log.d("Action",action+"");
-
         switch (action) {
             case MotionEvent.ACTION_DOWN:
                 // get the point the user's finger touches
                 touchPoint.x = (int) eve.getX(pointerIndex);
                 touchPoint.y = (int) eve.getY(pointerIndex);
-
-                downTime = System.nanoTime();
                 break;
             case MotionEvent.ACTION_MOVE:
                 if (eve.getPointerCount() < 2) {   // leave two finger gestures for other actions
@@ -58,8 +53,6 @@ public class TouchableWrapper extends FrameLayout {
                             // move the camera (NOT animateCamera() ) to new position with "bearing" updated
                             if ((angle+"").contains("NaN")) return;
 
-                            Log.d("Angle",angle+"");
-
                             Map.getgMap().moveCamera(CameraUpdateFactory.newCameraPosition(CameraPosition.builder().target(latlng).tilt(67.5f).zoom(18).bearing(Map.getgMap().getCameraPosition().bearing - angle).build()));
                         }
                     });
@@ -68,14 +61,6 @@ public class TouchableWrapper extends FrameLayout {
                     return true;
                 } else
                     break;
-            case MotionEvent.ACTION_UP:
-                if ((System.nanoTime() - downTime) / 1000000000.0f < PRESS_THRESHOLD) {
-                    LatLng focus = Map.getgMap().getProjection().fromScreenLocation(new Point((int) eve.getX(pointerIndex), (int) eve.getY(pointerIndex)));
-
-                    MainActivity.focusOn(focus);
-                }
-
-                break;
         }
 
         return true;

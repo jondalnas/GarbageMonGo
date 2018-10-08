@@ -1,12 +1,15 @@
 package com.garbagemon.jonas.garbagemongo;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -19,6 +22,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 public class MainActivity extends AppCompatActivity {
     private static GPSTracker GPS;
     private static Map map;
+    private TrashHandler trash;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,15 +33,28 @@ public class MainActivity extends AppCompatActivity {
         checkPermissions();
 
         map = new Map();
-        GPS = new GPSTracker(getApplicationContext());
+        trash = new TrashHandler(map);
+        GPS = new GPSTracker(MainActivity.this);
     }
 
     public static void updateMap() {
-        map.update(GPS.location);
+        map.update(GPS.getLocation());
     }
 
     public static void focusOn(LatLng location) {
         map.focus(location);
+    }
+
+    public void addTrash(View view) {
+        trash.addTrash(GPS.getLocation());
+    }
+
+    public void collectTrash(View view) {
+        int token = trash.isCloseToTrash(GPS.getLocation());
+
+        if (token == -1) return;
+
+        trash.collectTrash(token);
     }
 
     @Override
@@ -71,11 +88,22 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void checkPermissions() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
+        checkPermission(Manifest.permission.ACCESS_FINE_LOCATION, MainActivity.this);
+    }
+
+    static int requestCode;
+    public static boolean checkPermission(String permission, Context context) {
+        boolean gotPermission = true;
+
+        if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale((Activity) context, permission)) {
+                gotPermission = false;
+                Log.w("Permission", "Didn't get permission: " + permission);
             } else {
-                ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
+                ActivityCompat.requestPermissions((Activity) context, new String[]{permission}, requestCode++);
             }
         }
+
+        return gotPermission;
     }
 }

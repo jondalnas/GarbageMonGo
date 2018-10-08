@@ -25,13 +25,17 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class Map extends SupportMapFragment implements OnMapReadyCallback {
 
     private View mapView;
     private static GoogleMap gMap;
     private TouchableWrapper tw;
     private Marker player;
-    private Marker focus;
+    private List<Marker> trash = new ArrayList<Marker>();
+    //private GoogleSheets sheets;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup parent, Bundle savedInstanceState) {
@@ -39,6 +43,7 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
         tw = new TouchableWrapper(getActivity(), gMap);
         tw.addView(mapView);
         getMapAsync(this);
+        //sheets = new GoogleSheets(getActivity());
         return tw;
     }
 
@@ -61,6 +66,23 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
 
     public void focus(LatLng location) {
         gMap.addMarker(new MarkerOptions().position(location).title("Trash"));
+    }
+
+    public int addTrash(LatLng location) {
+        trash.add(gMap.addMarker(new MarkerOptions().position(location).title("Trash")));
+        return trash.size()-1;
+    }
+
+    public boolean removeTrash(int id) {
+        if (id >= trash.size()) {
+            Log.d("Trash", "Something went wrong, try again!");
+            return false;
+        }
+
+        trash.get(id).remove();
+        trash.remove(id);
+
+        return true;
     }
 
     @Override
