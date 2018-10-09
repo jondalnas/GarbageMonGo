@@ -56,12 +56,18 @@ public class MainActivity extends AppCompatActivity {
         exp.expBar= XPBar;
 
         while(true) {
+            long startTime = System.nanoTime();
+
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     exp.updateExp();
                 }
             });
+
+            try {
+                Thread.sleep((1000L/60L)-(System.nanoTime() - startTime) / 1000000L);
+            } catch (java.lang.InterruptedException e) {e.printStackTrace();}
         }
     }
 

@@ -7,7 +7,7 @@ public class Exp {
     public ClipDrawable expBar;
     private int xp, targetXP;
     private int level;
-    private int toNextLevel = 300;
+    private int toNextLevel = 350;
     private int lastToNextLevel = 0;
 
     public void addXP(int xp) {
