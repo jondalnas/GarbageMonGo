@@ -11,9 +11,11 @@ import java.util.List;
 public class TrashHandler {
     private List<Trash> trashLocations = new ArrayList<Trash>();
     private Map map;
+    private Exp exp;
 
-    public TrashHandler(Map map) {
+    public TrashHandler(Map map, Exp exp) {
         this.map = map;
+        this.exp = exp;
     }
 
     public void addTrash(LatLng location) {
@@ -61,6 +63,8 @@ public class TrashHandler {
         if (!map.removeTrash(trashLocations.get(token).id)) return;
 
         trashLocations.remove(token);
+
+        exp.addXP(100);
 
         Log.d("Trash","Collected trash");
     }

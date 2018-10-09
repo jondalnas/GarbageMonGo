@@ -33,7 +33,7 @@
         android:id="@+id/collectTrash"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_marginStart="152dp"
+        android:layout_marginStart="140dp"
         android:onClick="collectTrash"
         android:src="@drawable/garbage"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -43,15 +43,17 @@
         android:id="@+id/XPBar"
         android:layout_width="11dp"
         android:layout_height="171dp"
+        android:layout_marginTop="197dp"
+        android:src="@drawable/xpbar"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="198dp"
-        tools:src="@drawable/xpbar" />
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView
         android:id="@+id/XPBarFill"
         android:layout_width="11dp"
         android:layout_height="171dp"
+        android:layout_marginTop="197dp"
+        android:src="@drawable/clip_image"
         app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="198dp"
-        tools:src="@drawable/xpbarfill" />
+        app:layout_constraintTop_toTopOf="parent" />
 </android.support.constraint.ConstraintLayout>

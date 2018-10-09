@@ -4,12 +4,14 @@ import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.ClipDrawable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -23,6 +25,8 @@ public class MainActivity extends AppCompatActivity {
     private static GPSTracker GPS;
     private static Map map;
     private TrashHandler trash;
+    private Exp exp;
+    private Thread main;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,9 +36,33 @@ public class MainActivity extends AppCompatActivity {
 
         checkPermissions();
 
+        exp = new Exp();
+
         map = new Map();
-        trash = new TrashHandler(map);
+        trash = new TrashHandler(map, exp);
         GPS = new GPSTracker(MainActivity.this);
+
+        main = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                loop();
+            }
+        });
+        main.start();
+    }
+
+    private void loop() {
+        ClipDrawable XPBar = (ClipDrawable) ((ImageView) findViewById(R.id.XPBarFill)).getDrawable();
+        exp.expBar= XPBar;
+
+        while(true) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    exp.updateExp();
+                }
+            });
+        }
     }
 
     public static void updateMap() {
