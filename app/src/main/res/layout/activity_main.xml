@@ -24,10 +24,10 @@
         android:id="@+id/foundTrash"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:src="@drawable/plus"
         android:onClick="addTrash"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        android:src="@drawable/plus"
+        app:layout_constraintEnd_toEndOf="@+id/map"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <ImageButton
         android:id="@+id/collectTrash"
@@ -41,8 +41,8 @@
 
     <ImageView
         android:id="@+id/XPBar"
-        android:layout_width="11dp"
-        android:layout_height="171dp"
+        android:layout_width="20dp"
+        android:layout_height="250dp"
         android:layout_marginTop="197dp"
         android:src="@drawable/xpbar"
         app:layout_constraintEnd_toEndOf="parent"
@@ -50,10 +50,37 @@
 
     <ImageView
         android:id="@+id/XPBarFill"
-        android:layout_width="11dp"
-        android:layout_height="171dp"
+        android:layout_width="20dp"
+        android:layout_height="250dp"
         android:layout_marginTop="197dp"
-        android:src="@drawable/clip_image"
+        android:src="@drawable/xpbar_clip"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/level"
+        android:layout_width="20dp"
+        android:layout_height="wrap_content"
+        android:text="1"
+        android:textAlignment="center"
+        android:textColor="@color/common_google_signin_btn_text_dark_focused"
+        app:layout_constraintBottom_toTopOf="@+id/XPBar"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <ImageView
+        android:id="@+id/modifierbar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:src="@drawable/modifier" />
+
+    <ImageView
+        android:id="@+id/modifierbarFill"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/modifier_clip"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

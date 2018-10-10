@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -54,6 +55,10 @@ public class MainActivity extends AppCompatActivity {
     private void loop() {
         ClipDrawable XPBar = (ClipDrawable) ((ImageView) findViewById(R.id.XPBarFill)).getDrawable();
         exp.expBar= XPBar;
+        TextView level = (TextView) findViewById(R.id.level);
+        exp.levelText = level;
+        ClipDrawable modifier = (ClipDrawable) ((ImageView) findViewById(R.id.modifierbarFill)).getDrawable();
+        exp.modifierImage = modifier;
 
         while(true) {
             long startTime = System.nanoTime();
@@ -67,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
             try {
                 Thread.sleep((1000L/60L)-(System.nanoTime() - startTime) / 1000000L);
-            } catch (java.lang.InterruptedException e) {e.printStackTrace();}
+            } catch (InterruptedException | IllegalArgumentException e) {e.printStackTrace();}
         }
     }
 
