@@ -1,3 +1,5 @@
+//Made by Jonas Jensen
+
 package com.garbagemon.jonas.garbagemongo;
 
 import android.Manifest;
@@ -37,7 +39,13 @@ public class MainActivity extends AppCompatActivity {
 
         checkPermissions();
 
-        exp = new Exp();
+        ClipDrawable XPBar = (ClipDrawable) ((ImageView) findViewById(R.id.XPBarFill)).getDrawable();
+        TextView level = (TextView) findViewById(R.id.level);
+        ClipDrawable modifier = (ClipDrawable) ((ImageView) findViewById(R.id.modifierbarFill)).getDrawable();
+        TextView currentModifier = (TextView) findViewById(R.id.current);
+        TextView nextModifier = (TextView) findViewById(R.id.next);
+
+        exp = new Exp(this, XPBar, level, modifier, currentModifier, nextModifier);
 
         map = new Map();
         trash = new TrashHandler(map, exp);
@@ -53,12 +61,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void loop() {
-        ClipDrawable XPBar = (ClipDrawable) ((ImageView) findViewById(R.id.XPBarFill)).getDrawable();
-        exp.expBar= XPBar;
-        TextView level = (TextView) findViewById(R.id.level);
-        exp.levelText = level;
-        ClipDrawable modifier = (ClipDrawable) ((ImageView) findViewById(R.id.modifierbarFill)).getDrawable();
-        exp.modifierImage = modifier;
 
         while(true) {
             long startTime = System.nanoTime();
@@ -67,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     exp.updateExp();
+                    if (GPS.location == null) GPS.getLocation();
                 }
             });
 

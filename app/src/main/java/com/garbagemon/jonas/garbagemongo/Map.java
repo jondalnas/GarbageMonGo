@@ -20,6 +20,8 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptor;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
@@ -51,6 +53,7 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     public void onMapReady(GoogleMap googleMap) {
         gMap = googleMap;
         gMap.getUiSettings().setScrollGesturesEnabled(false);
+        gMap.getUiSettings().setCompassEnabled(false);
     }
 
     public void update(LatLng location) {
@@ -69,7 +72,7 @@ public class Map extends SupportMapFragment implements OnMapReadyCallback {
     }
 
     public int addTrash(LatLng location) {
-        trash.add(gMap.addMarker(new MarkerOptions().position(location).title("Trash")));
+        trash.add(gMap.addMarker(new MarkerOptions().position(location).icon(BitmapDescriptorFactory.fromResource(R.drawable.garbage)).title("Trash")));
         return trash.size()-1;
     }
 
